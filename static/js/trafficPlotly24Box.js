@@ -93,20 +93,27 @@ d3.json(URL).then(function(data) {
     margin: {
       l: 50,
       r: 20,
-      t: 10,
+      t: 20,
       b: 60
     },
     xaxis: { 
       title: "Time",
       // range: [startDate, endDate],
-      // type: "date",
+      type: "date",
     },
     yaxis: { 
-      title: "Traffic Speed",
+      title: "Traffic Speed (MPH)",
       autorange: true,
       type: "linear",
     },
+    height: 250,
     showlegend: false,
+    font: {
+      // family: 'Courier New, monospace',
+      family: "'Arial', sans-serif",
+      size: 16,
+      // color: '#7f7f7f'
+    },
   };
 
   // Create new plot

@@ -17,7 +17,8 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   
   <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css"> -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -46,6 +47,10 @@
           <p class="header"><strong>Cautionary Statement (for PM2.5)</strong></p>
           <p class="aqi-statement"></p>
         </div>
+        <div class="aqi24">
+          <p class="header"><strong>Air Quality Index in the Past 24 Hours</strong></p>
+          <div id="aqi-plot"></div>
+        </div>
         <div class="traffic">
           <p class="header"><strong>Traffic Speed in the Past 24 Hours</strong></p>
           <!-- <div class="plotly-container">
@@ -60,9 +65,13 @@
   </div>
     
   <!-- My JS -->
-  <script type="text/javascript" src="../static/js/function.js"></script>
+  <!-- <script type="text/javascript" src="../static/js/function.js"></script>
   <script type="text/javascript" src="../static/js/index.js"></script>
-  <script type="text/javascript" src="../static/js/trafficPlotly24Box.js"></script>
+  <script type="text/javascript" src="../static/js/trafficPlotly24Box.js"></script> -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/function.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/trafficPlotly24Box.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/aqi24.js') }}"></script>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
