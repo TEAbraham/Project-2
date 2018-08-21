@@ -3,7 +3,6 @@ const api24URL = "/aqi_24";
 
 d3.json(api24URL).then(function(data) {
 
-
   data.marker.color = AQIstoColors(data.y)[0];
   data.text = AQIstoColors(data.y)[1];
   var traceData = [data];
@@ -42,6 +41,28 @@ d3.json(api24URL).then(function(data) {
 
   // Create new plot
   Plotly.newPlot("aqi-plot", traceData, layout);
+
+  // Update current reading
+  console.log(data.x);
+  console.log(data.y);
+  // let i = data.x.indexOf(Math.max(...data.x));
+  var AQITime = data.x[data.x.length-1];
+  var AQI = data.y[data.x.length-1];
+  console.log(AQITime, AQI);
+
+  var level = AQItoLevel(AQI)[0];
+  var color = AQItoLevel(AQI)[1];
+  var statement = AQItoLevel(AQI)[2];
+  // console.log(AQItoLevel(AQI))
+
+  var stationName = "Cicero2, Illinois, USA";
+  d3.select(".aqi-location-time").text(`${stationName}, ${AQITime}`);
+  d3.select(".aqi-value").text(AQI);
+  d3.select(".aqi-level").text(level);
+  d3.select(".aqi-statement").text(statement);
+  d3.select(".aqi-banner").style("background-color", color);
+  d3.select(".aqi-level").style("color", color);
+
 })
 
 // From AQI value to the corresponding color

@@ -10,12 +10,12 @@ d3.json(url).then(function(AQIData) {
   var statement = AQItoLevel(AQI)[2];
   // console.log(AQItoLevel(AQI))
 
-  d3.select(".aqi-location-time").text(`${stationName}, ${AQITime}`);
-  d3.select(".aqi-value").text(AQI);
-  d3.select(".aqi-level").text(level);
-  d3.select(".aqi-statement").text(statement);
-  d3.select(".aqi-banner").style("background-color", color);
-  d3.select(".aqi-level").style("color", color);
+  // d3.select(".aqi-location-time").text(`${stationName}, ${AQITime}`);
+  // d3.select(".aqi-value").text(AQI);
+  // d3.select(".aqi-level").text(level);
+  // d3.select(".aqi-statement").text(statement);
+  // d3.select(".aqi-banner").style("background-color", color);
+  // d3.select(".aqi-level").style("color", color);
 })
 
 function AQItoLevel(AQI) {
