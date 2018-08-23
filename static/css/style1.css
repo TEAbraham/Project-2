@@ -1,0 +1,59 @@
+
+html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  h1 {
+    color: white !important;
+    font-size: 72px !important;
+  }
+  
+  h2 {
+    color: navy !important;
+    font-size: 36px !important;
+  }
+  
+  h6 {
+    color: purple !important;
+    font-size: 20px !important;
+    text-align: center !important;
+  }
+  
+  p {
+    text-indent: 50px;
+    color: white;
+  }
+  
+  #dates {
+    text-indent: 30px;
+    text-align: justify;
+    color: white;
+  }
+  
+  body {
+    font-size: 24px;
+    font-family: Verdana, Geneva, sans-serif !important;
+    padding-bottom: 80px;
+    background-color: #6699cc!important;
+    background-image: url("images/sky.png");
+  }
+  
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%; /* Set the fixed height of the footer here */
+    height: 10px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    text-align: center;
+    background-color: white !important;
+  }
+  
+  #footer p {
+    margin: 0;
+    font-size: 16px;
+    color: navy !important;
+  
+  }
+  
