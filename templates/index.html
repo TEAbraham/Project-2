@@ -11,7 +11,7 @@
 
   <!-- D3 JS -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
   <!-- Plotly JS -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -28,6 +28,38 @@
       <div class="map col-md-7 col-xs-12">
         <div class="map-container">
           <iframe class="ifrm" title="Traffic Map" width="100%" src="traffic.html"></iframe>
+        </div>
+        <div class="map col-md-7 col-xs-12">
+
+            <table>
+                <tr><td>
+                        <div>
+         
+                            <form method="POST" action="/home" role="form", name="homeform">
+                                <div>
+                                    <input type="submit" value="Home" class="btn btn-info">                            
+                                </div>
+                            
+                            </form>   
+                        </div>
+                    </td>
+                    <td>
+                        <div>   
+                            <form method="POST" action="/history" role="form", name="TAQform">
+                             
+                              <div>
+                
+                                  <input type="submit" value="View Historical Data" class="btn btn-info">
+                            
+                              </div>
+                            </form>  
+                        </div>
+                                
+                    </td>
+                </tr>
+        
+            </table>
+
         </div>
       </div>
 

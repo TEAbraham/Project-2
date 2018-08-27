@@ -368,4 +368,3 @@ d3.csv(pmurl).then(data1 => {
 };
 
 go();
-
