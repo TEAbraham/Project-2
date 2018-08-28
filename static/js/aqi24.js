@@ -1,7 +1,9 @@
 // Fetch AQI data from api
-const api24URL = "/aqi_24";
+const api24URL = "/api_aqi_24";
 
 d3.json(api24URL).then(function(data) {
+
+  console.log(data);
 
   data.marker.color = AQIstoColors(data.y)[0];
   data.text = AQIstoColors(data.y)[1];

@@ -1,6 +1,11 @@
-# Flask and database setup
+# Dependencies
 import pandas as pd
 import requests
+import sys
+if sys.version_info[0] < 3: 
+    from StringIO import StringIO
+else:
+    from io import StringIO
 from flask import (
     Flask,
     render_template,
@@ -10,6 +15,8 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from aqi2json import aqi2json
 import pymongo
+from datetime import datetime, timedelta
+import json
 
 # Flask Setup
 app = Flask(__name__)
@@ -21,7 +28,8 @@ db = SQLAlchemy(app)
 
 # Create connection variable
 # conn = 'mongodb://localhost:27017'
-conn = 'mongodb://trafficaquser:taq1234@ds133202.mlab.com:33202/trafficaq'
+# conn = 'mongodb://trafficaquser:taq1234@ds133202.mlab.com:33202/trafficaq'
+conn = 'mongodb://trafficaquser:taq1234@ds233452.mlab.com:33452/trafficaq'
 
 # Pass connection to the pymongo instance.
 client = pymongo.MongoClient(conn)
@@ -58,23 +66,21 @@ def setup():
 
 # Flask Routes
 @app.route("/")
-def home():
+def index():
     """Render Home Page."""
-    # return render_template("index.html")
-    return render_template('form.html')
+    return render_template("index.html")
 
-@app.route("/home", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
 def homeback():
     """Render Home Page."""
-    # return render_template("index.html")
-    return render_template('form.html')    
+    return render_template("index.html")
 
-@app.route('/traffic.html')
-def main():
+@app.route('/traffic')
+def traffic():
     return render_template('traffic.html')
 
-@app.route("/aqi_24")
-def aqi_24_data():
+@app.route("/api_aqi_24")
+def api_aqi_24():
     """Return aqi data"""
 
     # Fetch aqi data for the last 24 hours
@@ -119,72 +125,60 @@ def aqi_24_data():
     }
     return jsonify(plot_trace)
 
-@app.route("/load", methods=["GET", "POST"])
-def load():
+@app.route("/api_aqi_historic")
+def api_aqi_historic():
+    """Return historical air quality data"""
 
-    if request.method == "POST":
-        startDate = request.form["startDate"]
-        endDate = request.form["endDate"]
-
-
-    metaList = []
-    metaUrl = "https://data.cityofchicago.org/resource/8v9j-bter.json?$limit=1500"
-    response = requests.get(metaUrl)
-    metaData = response.json()
-
-    for data in metaData:
-        metaDict = {}
-        metaDict["segmentid"] = data.get('segmentid')
-        metaDict["coordinates"] = [data.get('_lif_lat'), data.get('start_lon'),data.get('_lit_lat'), data.get('_lit_lon')] 
-        metaList.append(metaDict)
-    
-    trafficUrl = "https://data.cityofchicago.org/resource/kkgn-a2j4.json?$where=last_update%20between%20%272018-03-13T09:30:00%27%20and%20%272018-03-13T09:40:00%27&$limit=1500"
-
-
-    trafficUrl = "https://data.cityofchicago.org/resource/kkgn-a2j4.json?$where=last_update%20between%20%272018-03-13%27%20and%20%272018-03-14%27&$limit=1500"
-
-    trafficUrl = (f"https://data.cityofchicago.org/resource/kkgn-a2j4.json?$where=last_update%20between%20%27{startDate}%27%20and%20%27{endDate}%27&$limit=1500")
-
-    print(trafficUrl)
-
-
-    response = requests.get(trafficUrl)
-    trafficData = response.json()
-    trafficList = []
-
-    for data in trafficData:
-        trafficDict = {}
-        trafficDict["segmentid"] = data.get('segment_id')
-        trafficDict["coordinates"] = [d.get('coordinates') for d in metaList if d.get('segmentid') == data.get('segment_id')]
-        trafficList.append(trafficDict)
-        trafficDict["traffic"] = data.get('traffic')
-
-    mdb.traffic.insert_many(trafficList)
-
-    print("done traffic")
-    print("start aq")
-    aqUrl = (f"https://aqs.epa.gov/api/rawData?user=thomas.e.abraham@gmail.com&pw=khakiosprey52&format=AQCSV&param=81102&bdate=20180601&edate=20180608&state=17&county=031")
+    # API URL
+    aqUrl = "https://aqs.epa.gov/api/rawData?user=thomas.e.abraham@gmail.com&pw=khakiosprey52&format=AQCSV&param=81102&bdate=20180601&edate=20180608&state=17&county=031"
     print(aqUrl)
 
-    # response = requests.get(aqUrl)
-    # aqData = response.json()
-    # print(f"aqData length {len(aqData)}")
-    # db.aq.insert_many(aqData)
+    # Fetch data from API
+    response = requests.get(aqUrl)
+    html_string = StringIO(response.text)
+    df = pd.read_csv(html_string, sep=",")
+    aqData = json.loads(df.to_json(orient='records'))
 
-    return render_template("index.html")
-    print("Server received request for 'load' page...")
-    return "Welcome to my 'load' page!"
+    # Store in database
+    mdb.aqHistoric.insert_many(aqData)
 
-@app.route("/noload", methods=["GET", "POST"])
-def noload():
-    return render_template("index.html")
+    aqData = json.loads(df.to_json(orient='records'))
+    # data = json.dumps(aqData, indent=2, separators=(', ', ': '))
+    # return render_template('api_aqi_historic.html', data=data)
+    return jsonify(aqData)
 
-@app.route("/history", methods=["GET", "POST"])
-def history():
+@app.route("/api_traffic_24")
+def api_traffic_24():
+    """Return real-time traffic data for the past 24 hours"""
+
+    # Time strings
+    time_now = datetime.now().strftime("'%Y-%m-%dT%H:%M:%S'")
+    time_24 = (datetime.now() - timedelta(days=1)).strftime("'%Y-%m-%dT%H:%M:%S'")
+
+    # Base URL for traffic segment data
+    baseURL = "https://data.cityofchicago.org/resource/sxs8-h27x.json?"
+
+    # Compile URL for traffic segment data within past 24 hours
+    trafficUrl = f"{baseURL}$where=time between {time_24} and {time_now} and speed>0&$select=avg(start_latitude),avg(start_longitude),avg(end_latitude),avg(end_longitude),avg(speed),segment_id,sum(bus_count)&$group=segment_id&$limit=25000"
+
+    # Fetch data from API
+    response = requests.get(trafficUrl)
+    trafficData = response.json()
+
+    # Store in database
+    mdb.traffic24Hours.insert_many(trafficData)
+
+    trafficData = response.json()
+    # data = json.dumps(trafficData, indent=2, separators=(', ', ': '))
+    # return render_template('api_traffic_24.html', data=data)
+    return jsonify(trafficData)
+
+@app.route("/historical", methods=["GET", "POST"])
+def historical():
     # historyURL = "https://teabraham.github.io/Assignments/aqsd3/"
     # https://teabraham.github.io/Assignments/aqidash/
     
-    return render_template("history.html", iframe="https://teabraham.github.io/Assignments/aqidash/")
+    return render_template("historical.html", iframe="https://teabraham.github.io/Assignments/aqidash/")
   
 
 if __name__ == '__main__':

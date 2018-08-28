@@ -6,6 +6,11 @@ body {
  
 }
 
+.content-container {
+  padding: 15px, 0px;
+  margin-bottom: 15px;
+}
+
 .collect {
   /* background-image: url("../images/images.jpeg"); */
   background-color: lightblue
@@ -121,7 +126,7 @@ h2 {
   border-radius: 10px;
   padding: 15px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .traffic, .aqi24 {
@@ -134,4 +139,119 @@ h2 {
 
 th, td {
   padding: 5px;
+}
+
+/* Navigation bar */
+.navbar {
+  margin: 0px;
+  border: 0px;
+  margin-bottom: 15px;
+}
+
+.navbar-container {
+  background-color: rgb(230, 230, 230);
+  background-color: rgb(36,41,46);
+  margin: 0px;
+  border: none;
+  padding: 15px;
+}
+
+.navbar-header {
+  /* font-family: Georgia, 'Times New Roman', Times, serif; */
+  /* background-color: white; */
+  position: relative;
+  left: 5px;
+  border: none;
+}
+
+.navbar-brand {
+  position: relative;
+  left: 2%;
+  font-weight: bold;
+  color: rgb(245, 245, 245);
+  font-size: 25px;
+  margin: 0px;
+}
+
+.navbar-right {
+  margin-right: 0px;
+  /* padding-right: 15px; */
+  color: #666666;
+}
+
+.nav-item {
+  padding: 8px, 0px;
+  margin-right: 50px;
+  /* list-style-type: none; */
+  /* list-style-position: outside; */
+  /* line-height: 24px; */
+  text-align: left;
+  /* display: block; */
+  list-style: none;
+}
+
+.nav-link {
+  font-size: 22px;
+  color: #666666;
+  color: rgb(245, 245, 245);
+  padding: 15px;
+}
+
+.navbar-nav {
+  padding: 0px;
+  line-height: 50px;
+}
+
+.nav-item a:hover {
+  color: rgb(255,255,255,0.75);
+  text-decoration: none;
+  background-color: rgb(36,41,46);
+}
+
+.active:hover {
+  color: rgb(245, 245, 245);
+}
+
+.align-right {
+  margin-right: 0px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  background-color: rgb(36,41,46);
+}
+
+/* Footer */
+.unique-color-dark {
+  background-color: rgb(43,49,55);
+  color: rgb(245, 245, 245);
+  padding: 0px;
+  padding-top: 25px;
+  margin: 0px;
+}
+
+.text-uppercase {
+  margin-bottom: 15px;
+}
+
+.footer-links {
+  margin: 0px, 10px;
+}
+
+footer a {
+  color: rgb(245, 245, 245);
+}
+
+footer a:hover {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.footer-copyright {
+  padding: 20px;
+  background-color: rgb(36,41,46);
+}
+
+footer .container {
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
