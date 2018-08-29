@@ -1,10 +1,10 @@
-# Project-2 Visualizing traffic and air quality of Chicago
+# Visualizing traffic and air quality of Chicago
 
 Kanika, Rajesh, Tom, and Angang
 
 ## Project description
 
-How does Chicago traffic and air quality change over time? We have developed a web dashboard to visualize both real-time and historical trends. Check out our visualizations [here](https://chicago-traffic-air.herokuapp.com/)!
+How do Chicago traffic and air quality change over time? We have developed a web dashboard to visualize both real-time and historical trends. Check out our visualizations [here](https://chicago-traffic-pollution.herokuapp.com/)!
 
 ## Data sources
 
