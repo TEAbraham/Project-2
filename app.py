@@ -173,13 +173,20 @@ def api_traffic_24():
     # return render_template('api_traffic_24.html', data=data)
     return jsonify(trafficData)
 
+@app.route("/historic_d3")
+def historic_d3():
+    return render_template("historic_d3.html")
+
+@app.route("/historic_index")
+def historic_index():
+    return render_template("historic_index.html")
+
 @app.route("/historical", methods=["GET", "POST"])
 def historical():
-    # historyURL = "https://teabraham.github.io/Assignments/aqsd3/"
-    # https://teabraham.github.io/Assignments/aqidash/
     
-    return render_template("historical.html", iframe="https://teabraham.github.io/Assignments/aqidash/")
-  
+    # return render_template("historical.html", iframe="https://teabraham.github.io/Assignments/aqidash/")
+    return render_template("historical.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
