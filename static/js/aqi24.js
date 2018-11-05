@@ -57,7 +57,7 @@ d3.json(api24URL).then(function(data) {
   var statement = AQItoLevel(AQI)[2];
   // console.log(AQItoLevel(AQI))
 
-  var stationName = "Cicero2, Illinois, USA";
+  var stationName = data.siteName + ", Illinois, USA";
   d3.select(".aqi-location-time").text(`${stationName}, ${AQITime}`);
   d3.select(".aqi-value").text(AQI);
   d3.select(".aqi-level").text(level);

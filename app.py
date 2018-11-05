@@ -85,7 +85,12 @@ def api_aqi_24():
 
     # Fetch aqi data for the last 24 hours
     aqi_data = aqi2json()
-    df = aqi_data.loc[aqi_data['SiteName']=="Cicero2"]
+    if "Cicero2" in aqi_data['SiteName'].unique():
+        site_name = 'Cicero2'
+        df = aqi_data.loc[aqi_data['SiteName']=="Cicero2"]
+    else:
+        site_name = 'Chi_com'
+        df = aqi_data.loc[aqi_data['SiteName']=="CHI_COM"]
 
     # Add aqi data to the database
     times = []
@@ -103,7 +108,10 @@ def api_aqi_24():
         )
         db.session.add(new_entry)
         db.session.commit()
-        times.append(row['UTC'])
+        time_utc = datetime.strptime(row['UTC'], '%Y-%m-%dT%H:%M')
+        time_chi = (time_utc - timedelta(hours=6)).strftime("%Y-%m-%dT%H:%M")
+        # time_chi = row['UTC']
+        times.append(time_chi)
         aqis.append(row['AQI'])
 
     # Generate the plot trace
@@ -122,6 +130,7 @@ def api_aqi_24():
         #     "color": "#17BECF"
         # },
         "text": "hourly AQI",
+        "siteName": site_name,
     }
     return jsonify(plot_trace)
 
